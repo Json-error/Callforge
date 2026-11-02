@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Callforge</title>
+  <meta name="description" content="Free power dialer with live transcript and call script, using your own phone number." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Callforge</div>
+    <div class="stats" id="stats"></div>
+    <div class="top-actions">
+      <button id="btnImport" class="ghost">Import list</button>
+      <button id="btnExport" class="ghost">Export CSV</button>
+      <button id="btnSettings" class="ghost">Settings</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- Queue -->
+    <section class="panel queue">
+      <div class="panel-head">
+        <h2>Queue</h2>
+        <select id="filter" aria-label="Filter queue">
+          <option value="all">All</option>
+          <option value="pending">Pending</option>
+          <option value="done">Called</option>
+        </select>
+      </div>
+      <ol id="queueList" class="queue-list"></ol>
+      <p id="queueEmpty" class="empty">No numbers yet. Click <b>Import list</b> to paste or upload a CSV.</p>
+    </section>
+
+    <!-- Dialer -->
+    <section class="panel dialer">
+      <div class="contact-card">
+        <div class="contact-name" id="cName">No contact selected</div>
+        <div class="contact-meta" id="cMeta"></div>
+        <a class="contact-phone" id="cPhone" href="#"></a>
+        <div class="contact-notes" id="cNotes"></div>
+      </div>
+
+      <div class="call-status" id="callStatus">Idle</div>
+
+      <div class="dial-controls">
+        <button id="btnDial" class="primary big">Start dialing</button>
+        <button id="btnSkip" class="ghost">Skip</button>
+        <button id="btnPause" class="ghost" hidden>Pause</button>
+      </div>
+
+      <div class="dispo">
+        <div class="dispo-label">How did it go? <span class="hint">(keys 1–7)</span></div>
+        <div class="dispo-grid" id="dispoGrid"></div>
+      </div>
+
+      <label class="field">
+        <span>Call notes</span>
+        <textarea id="callNotes" rows="3" placeholder="Anything worth remembering…"></textarea>
+      </label>
+      <p class="hint shortcuts">Shortcuts: <kbd>D</kbd> dial · <kbd>S</kbd> skip · <kbd>P</kbd> pause · <kbd>T</kbd> transcribe · <kbd>1</kbd>–<kbd>7</kbd> log result</p>
+    </section>
+
+    <!-- Script + Transcript -->
+    <section class="panel side">
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="script" role="tab">Script</button>
+        <button class="tab" data-tab="transcript" role="tab">Transcript <span id="recDot" class="rec-dot" hidden></span></button>
+      </div>
+
+      <div class="tab-body" id="tab-script">
+        <div class="script-tools">
+          <button id="btnEditScript" class="ghost small">Edit script</button>
+          <button id="btnResetScript" class="ghost small" hidden>Reset to default</button>
+        </div>
+        <div id="scriptView" class="script-view"></div>
+        <textarea id="scriptEdit" class="script-edit" hidden></textarea>
+        <p class="hint" id="scriptHint" hidden>Variables: {first_name} {name} {company} {my_name} {my_company}. Lines starting with <code>## </code> become headings, <code>- </code> become bullets.</p>
+      </div>
+
+      <div class="tab-body" id="tab-transcript" hidden>
+        <div class="script-tools">
+          <button id="btnRec" class="ghost small">Start transcribing</button>
+          <span id="recSupport" class="hint"></span>
+        </div>
+        <div id="transcript" class="transcript"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Import dialog -->
+  <dialog id="importDlg">
+    <form method="dialog" class="dlg">
+      <h3>Import numbers</h3>
+      <p class="hint">Paste one per line (<code>Name, Phone, Company</code>) or a CSV with a header row containing <code>phone</code>. Columns named <code>name</code>, <code>first_name</code>, <code>last_name</code>, <code>company</code>, <code>notes</code> are picked up automatically.</p>
+      <textarea id="importText" rows="10" placeholder="Jane Doe, (555) 123-4567, Acme Inc&#10;John Smith, 555-987-6543, Globex"></textarea>
+      <div class="row">
+        <label class="ghost file-btn">Upload CSV<input type="file" id="importFile" accept=".csv,.txt" hidden /></label>
+        <label class="check"><input type="checkbox" id="importReplace" /> Replace current list</label>
+      </div>
+      <div class="row end">
+        <button value="cancel" class="ghost">Cancel</button>
+        <button id="importGo" value="ok" class="primary">Import</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Settings dialog -->
+  <dialog id="settingsDlg">
+    <form method="dialog" class="dlg">
+      <h3>Settings</h3>
+      <label class="field"><span>Your name</span><input id="sMyName" /></label>
+      <label class="field"><span>Your company</span><input id="sMyCompany" /></label>
+      <label class="field"><span>Country code added to 10-digit numbers</span><input id="sCountry" placeholder="+1" /></label>
+      <label class="check"><input type="checkbox" id="sAutoDial" /> Power dial: dial the next number automatically after logging a result</label>
+      <label class="field"><span>Seconds before next dial</span><input id="sDelay" type="number" min="0" max="60" /></label>
+      <label class="check"><input type="checkbox" id="sAutoRec" /> Start transcribing automatically when a call starts</label>
+      <div class="row end">
+        <button id="btnClearAll" type="button" class="ghost bad">Clear all data</button>
+        <button value="ok" class="primary">Done</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" hidden></div>
+  <script src="app.js"></script>
+</body>
+</html>

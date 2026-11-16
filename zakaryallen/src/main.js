@@ -39,8 +39,8 @@ document.querySelectorAll("img").forEach((img) => {
     const d = document.createElement("div");
     d.className = "img-fallback";
     d.textContent = img.dataset.fallback || "ZA";
-    d.setAttribute("role", "img");
-    d.setAttribute("aria-label", img.alt || "");
+    if (img.alt) { d.setAttribute("role", "img"); d.setAttribute("aria-label", img.alt); }
+    else d.setAttribute("aria-hidden", "true");
     img.replaceWith(d);
   };
   if (img.complete && img.naturalWidth === 0 && img.src) fail();

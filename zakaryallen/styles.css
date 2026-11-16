@@ -666,6 +666,28 @@ h1 {
   .measure-grid.two { grid-template-columns: 1fr 1fr; }
   .stat { min-height: 128px; padding: 16px; }
 }
+/* Mobile tap targets & overflow safety */
+.contact-grid > *, .film-grid > *, .about-grid > * { min-width: 0; }
+.contact-form input, .contact-form textarea { width: 100%; min-width: 0; }
+.nav-toggle { min-height: 44px; min-width: 64px; }
+.brand { min-height: 44px; }
+.link-row a { min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; justify-content: center; }
+.site-footer a { display: inline-flex; align-items: center; min-height: 44px; }
+.scroll-cue { min-width: 44px; min-height: 44px; border: 0; }
+.scroll-cue::before { content: ""; position: absolute; left: 9px; top: 1px; width: 26px; height: 42px; border: 2px solid rgba(255, 255, 255, 0.35); border-radius: 14px; box-sizing: border-box; }
+.scroll-cue span { left: 22px; }
+@media (max-width: 760px) {
+  .nav ul a { display: flex; align-items: center; min-height: 44px; }
+  .hero-inquiry a, .film-more a, .empty-state a { display: inline-block; padding: 10px 0; }
+}
+@media (max-width: 360px) {
+  .nav { padding: 12px 14px; }
+  .brand-name { font-size: 12px; }
+  .contact-form, .contact-side { padding: 20px; }
+  .section { padding-left: 14px; padding-right: 14px; }
+  h1 { font-size: 58px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }

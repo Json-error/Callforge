@@ -67,7 +67,7 @@ if (!reduceMotion && window.matchMedia("(hover: hover)").matches) {
 }
 
 // ---------- Reveal + count-up + gauges ----------
-const revealTargets = document.querySelectorAll(".section-head, .stat, .social-card, .gauge, .video, .quote, .event, .about-photo, .about-text, .contact-form, .contact-side, .empty-state");
+const revealTargets = document.querySelectorAll(".section-head, .reel, .stat, .social-card, .gauge, .video, .quote, .event, .about-photo, .about-text, .contact-form, .contact-side, .empty-state");
 revealTargets.forEach((el, i) => {
   el.classList.add("reveal");
   el.style.transitionDelay = `${(i % 4) * 70}ms`;

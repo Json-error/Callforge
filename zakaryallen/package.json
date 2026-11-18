@@ -1,0 +1,14 @@
+{
+  "name": "zakaryallen-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "3D recruiting site for Zakary Allen (QB, Class of 2030)",
+  "scripts": {
+    "build": "esbuild src/main.js --bundle --minify --format=esm --target=es2020 --outfile=main.js",
+    "serve": "python3 -m http.server 8080"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "three": "^0.187.0"
+  }
+}
